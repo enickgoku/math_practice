@@ -5,10 +5,10 @@ const audio = document.getElementById("myAudio");
 let answer = 0;
 
 function generate_equation() {
-    let num1 = Math.floor(Math.random() * 13);
-    let num2 = Math.floor(Math.random() * 13);
-    let dummyAnswer1 = Math.floor(Math.random() * 13);
-    let dummyAnswer2 = Math.floor(Math.random() * 13);
+    let num1 = Math.floor(Math.random() * 21);
+    let num2 = Math.floor(Math.random() * 21);
+    let dummyAnswer1 = Math.floor(Math.random() * 21);
+    let dummyAnswer2 = Math.floor(Math.random() * 21);
     let allAnswers = [];
     let switchAnswers = [];
 
@@ -23,6 +23,10 @@ function generate_equation() {
     }
 
     if (num1 < num2) {
+      return generate_equation();
+    }
+
+    if (num1 === 0 | num2 === 0) {
       return generate_equation();
     }
 
