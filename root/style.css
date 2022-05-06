@@ -131,3 +131,21 @@ nav a{
   }
 
 }
+
+#option1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+#option2 {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+#option3 {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
