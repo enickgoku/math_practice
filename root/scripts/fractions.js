@@ -1,17 +1,18 @@
-// const option1 = document.getElementById("option1");
-// const option2 = document.getElementById("option2");
-// const option3 = document.getElementById("option3");
-// const audio = document.getElementById("myAudio");
+const option1 = document.getElementById("option1");
+const option2 = document.getElementById("option2");
+const option3 = document.getElementById("option3");
+const audio = document.getElementById("myAudio");
 
-// function getElementById(id) {
-//     return document.getElementById(id);
-// }
+let answer;
 
-// function setInnerHTML(id, value) {
-//     const { numerator, denominator } = value
+function getElementById(id) {
+    return document.getElementById(id);
+}
 
-//     document.getElementById(id).innerHTML = `${numerator} / ${denominator}`;
-// }
+function setInnerHTML(id, value) {
+    console.info(value)
+    document.getElementById(id).innerHTML = value;
+}
 
 function generateRandomNumber() {
     return Math.floor(Math.random() * 13);
@@ -69,86 +70,117 @@ function generateFraction() {
 
 function calculateAnswer(valueA, valueB) {
     const {
-        divisor: divisorA,
         numerator: numeratorA,
         denominator: denominatorA,
     } = valueA;
 
     const {
-        divisor: divisorB,
         numerator: numeratorB,
         denominator: denominatorB,
     } = valueB;
 
-    const divisor = Math.max(divisorA, divisorB);
-
-    const numerator = (numeratorA * divisor) + (numeratorB * divisor);
-    const denominator = (denominatorA * divisor) + (denominatorB * divisor);
-
-    console.log('Pre-Simp:', { numerator, denominator })
+    const numerator = (numeratorA * denominatorB) + (numeratorB * denominatorA);
+    const denominator = denominatorA * denominatorB;
 
     return simplifyFraction(numerator, denominator);
 }
 
 function generateEquation() {
+    let num1;
+    let num2;
+
     const answers = [];
 
-    // Don't generate more than 3 answers
-    for (let i = 0; i < 3; i++) {
-        const value = generateFraction();
+    // Generate true answer
+    while (answers.length < 1) {
+        const valueA = generateFraction();
+        const valueB = generateFraction();
 
-        // TODO: Randomize
-        i % 2 === 0 ? answers.push(value) : answers.unshift(value);
+        num1 = `${valueA.numerator} / ${valueA.denominator}`;
+        num2 = `${valueB.numerator} / ${valueB.denominator}`;
+    
+        const { numerator, denominator } = calculateAnswer(valueA, valueB);
+
+        const answerLabel = `${numerator} / ${denominator}`
+
+        if (numerator > denominator || denominator > 20) {
+            console.log('\x1b[31mInvalid Answer!\x1b[0m');
+            console.log('\x1b[33mValue A:\x1b[0m', valueA);
+            console.log('\x1b[33mValue B:\x1b[0m', valueB);
+            console.log('\x1b[33mAnswer:\x1b[0m', answerLabel)
+            console.log('\x1b[33mRetrying...\x1b[0m');
+            continue
+        }
+
+        // Recognized by event listener
+        answer = answerLabel;
+
+        answers.push(answerLabel);
     }
 
-    const valueA = generateFraction();
-    const valueB = generateFraction();
+    // Generate dummy answers
+    while (answers.length < 3) {
+        const { numerator, denominator } = generateFraction();
 
-    const answer = calculateAnswer(valueA, valueB);
+        const answerLabel = `${numerator} / ${denominator}`;
 
-    console.log('Value A:', valueA);
-    console.log('Value B:', valueB);
-    console.log('Answer:', answer);
+        // Try again if this collides with other answers in the array
+        if (answers.includes(answerLabel)) {
+            console.log('\x1b[31mAnswer Collision!\x1b[0m');
+            console.log('\x1b[33mAnswer:\x1b[0m', label)
+            console.log('\x1b[33mRetrying...\x1b[0m');
+            continue;
+        } else {
+            answers.push(answerLabel);
+        }
+    }
+
+    // Shuffle the answers
+    for (let i = answers.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = answers[i];
+        answers[i] = answers[j];
+        answers[j] = temp;
+    }
+
+    console.log('\x1b[32mAnswers:\x1b[0m', answers);
 
     // For display in the main problem view
-    // const num1 = generateFraction();
-    // setInnerHTML("num1", num1);
+    setInnerHTML("num1", num1);
+    setInnerHTML("num2", num2);
 
-    // const num2 = generateFraction();
-    // setInnerHTML("num2", num2);
+    const [answer1, answer2, answer3] = answers
 
-    // const [answer1, answer2, answer3] = answers
-
-    // setInnerHTML('option1', answer1);
-    // setInnerHTML('option2', answer2);
-    // setInnerHTML('option3', answer3);
+    setInnerHTML('option1', answer1);
+    setInnerHTML('option2', answer2);
+    setInnerHTML('option3', answer3);
 }
 
-// option1.addEventListener("click", function() {
-//     if (option1.innerHTML == answer) {
-//         generateEquation();
-//     }
-//     else {
-//         audio.play();
-//     }
-// });
+option1.addEventListener("click", function() {
+    if (option1.innerHTML == answer) {
+        generateEquation();
+    }
+    else {
+        audio.play();
+    }
+});
 
-// option2.addEventListener("click", function() {
-//     if (option2.innerHTML == answer) {
-//         generateEquation();
-//     }
-//     else {
-//         audio.play();
-//     }
-// });
+option2.addEventListener("click", function() {
+    if (option2.innerHTML == answer) {
+        generateEquation();
+    }
+    else {
+        audio.play();
+    }
+});
 
-// option3.addEventListener("click", function() {
-//     if (option3.innerHTML == answer) {
-//         generateEquation();
-//     }
-//     else {
-//         audio.play();
-//     }
-// });
+option3.addEventListener("click", function() {
+    if (option3.innerHTML == answer) {
+        generateEquation();
+    }
+    else {
+        audio.play();
+    }
+});
 
 generateEquation();
