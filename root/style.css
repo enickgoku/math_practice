@@ -75,9 +75,14 @@ nav a{
   margin: 10px 10px 0px 10px;
 }
 
-.equation h1{
+.equation h1 {
   display: inline;
   padding: 20px;
+}
+
+.equation h2 {
+  display: inline;
+  padding: 14px;
 }
 
 .answer-options{
@@ -130,22 +135,4 @@ nav a{
     font-size: .8rem;
   }
 
-}
-
-#option1 {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
-}
-
-#option2 {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
-}
-
-#option3 {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
 }
